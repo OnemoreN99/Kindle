@@ -127,6 +127,8 @@ esci() {
     rm -f "$STOP"
     echo 0 >"$RTC/wakealarm" 2>/dev/null
     lipc-set-prop com.lab126.powerd preventScreenSaver 0 2>/dev/null
+    # rimetti il Wi-Fi com'era prima (altrimenti resta la "modalità aereo")
+    [ -n "$WIFI_INIZIALE" ] && lipc-set-prop com.lab126.cmd wirelessEnable "$WIFI_INIZIALE" 2>/dev/null
     "$FBINK" -q -c -f -m -y 20 "Riavvio dell'interfaccia Kindle..."
     start lab126_gui 2>/dev/null || /etc/init.d/framework start 2>/dev/null
     exit 0
@@ -135,6 +137,7 @@ esci() {
 # ---------------- avvio ----------------
 log "avvio dashboard (fbink=$FBINK rtc=$RTC luce=$LUCE)"
 LUCE_INIZIALE="$(lipc-get-prop com.lab126.powerd flIntensity 2>/dev/null)"
+WIFI_INIZIALE="$(lipc-get-prop com.lab126.cmd wirelessEnable 2>/dev/null)"
 "$FBINK" -q -c -f -m -y 20 "Avvio dashboard..."
 lipc-set-prop com.lab126.powerd preventScreenSaver 1 2>/dev/null
 sleep 2
