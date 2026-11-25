@@ -207,9 +207,8 @@ def disegna(dati, adesso, preview=False):
     d = ImageDraw.Draw(img)
 
     if preview:  # orologio d'esempio: sul Kindle lo disegna dash.sh con gli stessi valori
-        testo_centrato(d, 0, W, 4, adesso.strftime("%H:%M"), font("Inter-ExtraBold.ttf", 150))
-        data = f"{GIORNI[adesso.weekday()].capitalize()} {adesso.day} {MESI[adesso.month - 1]}"
-        testo_centrato(d, 0, W, 170, data, font("Inter-SemiBold.ttf", 30))
+        import clock
+        clock.componi(img, adesso.strftime("%H:%M"), adesso.isoweekday(), adesso.day, adesso.month)
 
     cur, day = dati["current"], dati["daily"]
 
